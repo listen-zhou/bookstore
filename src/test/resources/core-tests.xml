@@ -1,0 +1,14 @@
+<suite reruntimes="2" thread-count="10" parallel="classes" verbose="10"
+       name="core" annotations="JDK" time-out="1800000">
+
+    <test name="normaltests" junit="false" annotations="JDK" preserve-order="true">
+        <!--<classes>-->
+            <!--<class name="com.winhong.bookstore.base.DataInitDestroy" />-->
+            <!--<class name="com.winhong.bookstore.base.BaseTest" />-->
+        <!--</classes>-->
+        <packages>
+            <package name="com.winhong.bookstore.*" />
+        </packages>
+    </test>
+
+</suite>
