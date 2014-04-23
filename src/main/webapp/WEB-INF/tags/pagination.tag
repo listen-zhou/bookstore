@@ -1,48 +1,38 @@
-<%@tag pageEncoding="UTF-8"%>
-<%@ attribute name="page" type="org.springframework.data.domain.Page" required="true"%>
-<%@ attribute name="paginationSize" type="java.lang.Integer" required="true"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ tag pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ attribute name="pageUrl" required="true" rtexprvalue="true" description="分页页面对应的URl" %>
+<%@ attribute name="pageAttrKey" required="true" rtexprvalue="true" description="Page对象在Request域中的键名称" %>
+<c:set var="pageUrl" value="${pageUrl}"/>
 <%
-int current =  page.getNumber() + 1;
-int begin = Math.max(1, current - paginationSize/2);
-int end = Math.min(begin + (paginationSize - 1), page.getTotalPages());
-
-request.setAttribute("current", current);
-request.setAttribute("begin", begin);
-request.setAttribute("end", end);
+    String separator = pageUrl.indexOf("?") > -1 ? "&" : "?";
+    jspContext.setAttribute("pageResult", request.getAttribute(pageAttrKey));
+    jspContext.setAttribute("pageUrl", pageUrl);
+    jspContext.setAttribute("separator", separator);
 %>
-
-<div class="pagination">
-	<ul>
-		 <% if (page.hasPreviousPage()){%>
-               	<li><a href="?page=1&sortType=${sortType}&${searchParams}">&lt;&lt;</a></li>
-                <li><a href="?page=${current-1}&sortType=${sortType}&${searchParams}">&lt;</a></li>
-         <%}else{%>
-                <li class="disabled"><a href="#">&lt;&lt;</a></li>
-                <li class="disabled"><a href="#">&lt;</a></li>
-         <%} %>
- 
-		<c:forEach var="i" begin="${begin}" end="${end}">
-            <c:choose>
-                <c:when test="${i == current}">
-                    <li class="active"><a href="?page=${i}&sortType=${sortType}&${searchParams}">${i}</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a href="?page=${i}&sortType=${sortType}&${searchParams}">${i}</a></li>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-	  
-	  	 <% if (page.hasNextPage()){%>
-               	<li><a href="?page=${current+1}&sortType=${sortType}&${searchParams}">&gt;</a></li>
-                <li><a href="?page=${page.totalPages}&sortType=${sortType}&${searchParams}">&gt;&gt;</a></li>
-         <%}else{%>
-                <li class="disabled"><a href="#">&gt;</a></li>
-                <li class="disabled"><a href="#">&gt;&gt;</a></li>
-         <%} %>
-
-	</ul>
+<div style="font:12px;background-color:#DDDDDD">
+    共${pageResult.totalPageCount}页，第${pageResult.currentPageNo}页
+    <c:if test="${pageResult.currentPageNo <=1}">
+        首页&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${pageResult.currentPageNo >1 }">
+        <a href="<c:url value="${pageUrl}"/>${separator}pageNo=1">首页</a>&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${pageResult.hasPreviousPage}">
+        <a href="<c:url value="${pageUrl}"/>${separator}pageNo=${pageResult.currentPageNo -1 }">上一页</a>&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${!pageResult.hasPreviousPage}">
+        上一页&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${pageResult.hasNextPage}">
+        <a href="<c:url value="${pageUrl}"/>${separator}pageNo=${pageResult.currentPageNo +1 }">下一页</a>&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${!pageResult.hasNextPage}">
+        下一页&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${pageResult.currentPageNo >= pageResult.totalPageCount}">
+        末页&nbsp;&nbsp;
+    </c:if>
+    <c:if test="${pageResult.currentPageNo < pageResult.totalPageCount}">
+        <a href="<c:url value="${pageUrl}"/>${separator}pageNo=${pageResult.totalPageCount }">末页</a>&nbsp;&nbsp;
+    </c:if>
 </div>
-

@@ -2,7 +2,7 @@
 	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <description>网上书店系统-仿china-pub</description>
+    <description>网上书店系统-china-pub</description>
 	<display-name>Online Bookstore</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -60,17 +60,17 @@
     </filter-mapping>
 
     <servlet>
-		<servlet-name>mvc-dispatcher</servlet-name>
+		<servlet-name>bookstore</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>
+            <param-value>/WEB-INF/bookstore-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>mvc-dispatcher</servlet-name>
+		<servlet-name>bookstore</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
     <servlet-mapping>
@@ -87,7 +87,7 @@
     </filter>
     <filter-mapping>
         <filter-name>HiddenHttpMethodFilter</filter-name>
-        <servlet-name>mvc-dispatcher</servlet-name>
+        <servlet-name>bookstore</servlet-name>
     </filter-mapping>
 
 </web-app>

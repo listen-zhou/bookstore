@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+    <!-- 扫描com.baobaotao.dao包下所有标注@Repository的DAO组件 -->
+    <context:component-scan base-package="com.winhong.bookstore.dao"/>
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!-- production环境 -->
+    <beans profile="production">
+        <context:property-placeholder ignore-unresolvable="true"
+                                      location="classpath*:/jdbc.properties"/>
+
+        <bean id="dataSource"
+              class="com.alibaba.druid.pool.DruidDataSource"
+              init-method="init" destroy-method="close"
+              p:driverClassName="${jdbc.driver}"
+              p:url="${jdbc.url}"
+              p:username="${jdbc.username}"
+              p:password="${jdbc.password}"
+              p:filters="${jdbc.filters}"
+              p:maxActive="${jdbc.maxActive}"
+              p:initialSize="${jdbc.initialSize}"
+              p:maxWait="${jdbc.maxWait}"
+              p:minIdle="${jdbc.minIdle}"
+              p:timeBetweenEvictionRunsMillis="${jdbc.timeBetweenEvictionRunsMillis}"
+              p:minEvictableIdleTimeMillis="${jdbc.minEvictableIdleTimeMillis}"
+              p:validationQuery="${jdbc.validationQuery}"
+              p:testWhileIdle="${jdbc.testWhileIdle}"
+              p:testOnBorrow="${jdbc.testOnBorrow}"
+              p:testOnReturn="${jdbc.testOnReturn}"
+              p:maxOpenPreparedStatements="${jdbc.maxOpenPreparedStatements}"
+              p:removeAbandoned="${jdbc.removeAbandoned}"
+              p:removeAbandonedTimeout="${jdbc.removeAbandonedTimeout}"
+              p:logAbandoned="${jdbc.logAbandoned}"/>
+
+        <!-- 数据源配置,使用应用服务器的数据库连接池 -->
+        <!--<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ExampleDB" />-->
+    </beans>
+
+    <!-- local development环境 -->
+    <beans profile="development">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/jdbc.properties"/>
+        <bean id="dataSource"
+              class="com.alibaba.druid.pool.DruidDataSource"
+              init-method="init" destroy-method="close"
+              p:driverClassName="${jdbc.driver}"
+              p:url="${jdbc.url}"
+              p:username="${jdbc.username}"
+              p:password="${jdbc.password}"
+              p:filters="${jdbc.filters}"
+              p:maxActive="${jdbc.maxActive}"
+              p:initialSize="${jdbc.initialSize}"
+              p:maxWait="${jdbc.maxWait}"
+              p:minIdle="${jdbc.minIdle}"
+              p:timeBetweenEvictionRunsMillis="${jdbc.timeBetweenEvictionRunsMillis}"
+              p:minEvictableIdleTimeMillis="${jdbc.minEvictableIdleTimeMillis}"
+              p:validationQuery="${jdbc.validationQuery}"
+              p:testWhileIdle="${jdbc.testWhileIdle}"
+              p:testOnBorrow="${jdbc.testOnBorrow}"
+              p:testOnReturn="${jdbc.testOnReturn}"
+              p:maxOpenPreparedStatements="${jdbc.maxOpenPreparedStatements}"
+              p:removeAbandoned="${jdbc.removeAbandoned}"
+              p:removeAbandonedTimeout="${jdbc.removeAbandonedTimeout}"
+              p:logAbandoned="${jdbc.logAbandoned}"/>
+    </beans>
+
+    <!-- unit test环境 -->
+    <beans profile="test">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.test.properties"/>
+        <bean id="dataSource"
+              class="com.alibaba.druid.pool.DruidDataSource"
+              init-method="init" destroy-method="close"
+              p:driverClassName="${jdbc.driver}"
+              p:url="${jdbc.url}"
+              p:username="${jdbc.username}"
+              p:password="${jdbc.password}"
+              p:filters="${jdbc.filters}"
+              p:maxActive="${jdbc.maxActive}"
+              p:initialSize="${jdbc.initialSize}"
+              p:maxWait="${jdbc.maxWait}"
+              p:minIdle="${jdbc.minIdle}"
+              p:timeBetweenEvictionRunsMillis="${jdbc.timeBetweenEvictionRunsMillis}"
+              p:minEvictableIdleTimeMillis="${jdbc.minEvictableIdleTimeMillis}"
+              p:validationQuery="${jdbc.validationQuery}"
+              p:testWhileIdle="${jdbc.testWhileIdle}"
+              p:testOnBorrow="${jdbc.testOnBorrow}"
+              p:testOnReturn="${jdbc.testOnReturn}"
+              p:maxOpenPreparedStatements="${jdbc.maxOpenPreparedStatements}"
+              p:removeAbandoned="${jdbc.removeAbandoned}"
+              p:removeAbandonedTimeout="${jdbc.removeAbandonedTimeout}"
+              p:logAbandoned="${jdbc.logAbandoned}"/>
+
+        <!-- 初始化数据表结构 与默认数据-->
+        <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
+            <jdbc:script location="classpath:sql/cleanup-data.sql"/>
+            <jdbc:script location="classpath:sql/import-data.sql" encoding="UTF-8"/>
+        </jdbc:initialize-database>
+    </beans>
+
+
+    <bean id="sessionFactory"
+          class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:mybatis.xml"
+          p:mapperLocations="classpath:mapper/*.xml"/>
+
+    <bean class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:sqlSessionFactoryBeanName="sessionFactory"
+          p:basePackage="com.winhong.bookstore.dao"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

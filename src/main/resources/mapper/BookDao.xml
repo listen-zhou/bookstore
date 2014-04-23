@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobaotao.dao.BookDao">
+    <cache
+            eviction="LRU"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+    <!-- 定义公共的SQL语句-->
+    <sql id="selectSql">
+        SELECT
+          b_id as id
+          ,b_name as name
+          ,b_original_price as originalPrice
+          ,b_discount as discount
+          ,b_vip_price as vipPrice
+          ,b_author as author
+          ,b_translator as translator
+          ,b_page_count as pageCount
+          ,b_isbn as isbn
+          ,b_publisher as publisher
+          ,b_publish_time as publishTime
+          ,b_added_time as addedTime
+          ,b_version as version
+          ,b_category as category
+        FROM bs_book A
+    </sql>
+    <!-- 根据id获取单个实体-->
+    <select id="searchById" resultType="book" parameterType="int">
+        <include refid="selectSql"/>
+        WHERE b_id = #{id}
+    </select>
+    <!-- 获取所有的列表-->
+    <select id="searchAll" resultType="book">
+        <include refid="selectSql"/>
+    </select>
+    <!-- 根据条件检索-->
+    <select id="search" resultType="book" parameterType="book">
+        <include refid="selectSql"/>
+        WHERE b_name LIKE #{name}
+    </select>
+    <!-- 新增-->
+    <insert id="insert" parameterType="book" useGeneratedKeys="true" keyProperty="keyId">
+
+    </insert>
+    <!-- 更新-->
+    <update id="update" parameterType="book">
+
+    </update>
+    <!-- 保存(新增或者更新)-->
+    <insert id="save" parameterType="book" useGeneratedKeys="true" keyProperty="keyId">
+        <choose>
+            <when test="keyId != null">
+
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </insert>
+    <!-- 删除-->
+    <delete id="delete" parameterType="book">
+        DELETE FROM bs_book
+        WHERE b_id = #{id}
+    </delete>
+
+    <!--++++++++++++++++++自定义方法++++++++++++++++-->
+    <select id="getBookByName" resultType="book" parameterType="string">
+        <include refid="selectSql"/>
+        WHERE b_name=#{name}
+    </select>
+    <!-- 列出排名前几位的畅销书-->
+    <select id="listMostBuyBook" resultType="book" parameterType="int">
+        <include refid="selectSql"/>
+        left join bs_book_statistics B on A.b_id = B.statics_book_id
+        order by B.statics_buy desc limit #{count}
+    </select>
+</mapper>
