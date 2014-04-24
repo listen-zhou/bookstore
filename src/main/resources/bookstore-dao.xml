@@ -12,6 +12,25 @@
     <!-- 扫描com.baobaotao.dao包下所有标注@Repository的DAO组件 -->
     <context:component-scan base-package="com.winhong.bookstore.dao"/>
     <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="sessionFactory"
+          class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:mybatis.xml"
+          p:mapperLocations="classpath:mapper/*.xml"/>
+
+    <bean class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:sqlSessionFactoryBeanName="sessionFactory"
+          p:basePackage="com.winhong.bookstore.dao"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- production环境 -->
     <beans profile="production">
@@ -106,26 +125,5 @@
             <jdbc:script location="classpath:sql/import-data.sql" encoding="UTF-8"/>
         </jdbc:initialize-database>
     </beans>
-
-
-    <bean id="sessionFactory"
-          class="org.mybatis.spring.SqlSessionFactoryBean"
-          p:dataSource-ref="dataSource"
-          p:configLocation="classpath:mybatis.xml"
-          p:mapperLocations="classpath:mapper/*.xml"/>
-
-    <bean class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sessionFactory"/>
-    </bean>
-
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-          p:sqlSessionFactoryBeanName="sessionFactory"
-          p:basePackage="com.winhong.bookstore.dao"/>
-
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          p:dataSource-ref="dataSource"/>
-
-    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>

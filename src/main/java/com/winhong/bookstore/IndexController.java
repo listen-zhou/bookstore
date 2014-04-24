@@ -20,13 +20,7 @@ public class IndexController {
 	public String welcome(ModelMap model) {
         List<Book> popularBooks = bookService.listPopularBooks(3);
 		model.addAttribute("pupolarBooks", popularBooks);
-		return "hello";
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "sitemesh")
-	public String sitemesh(ModelMap model) {
-		model.addAttribute("message", "Hello world!!!哈哈哈");
-		return "sitemesh/menu";
+		return "homepage";
 	}
 
 }
