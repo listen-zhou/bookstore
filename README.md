@@ -1,5 +1,8 @@
 ﻿## 网上书店系统，以SpringMVC为前端WEB框架，Spring全栈技术演示
 
+仿照china-pub网上书店，互动出版社，最好的专业书籍网站。哥已经是五星级会员了。^_^
+网址：<http://www.china-pub.com/>
+
 ---------------------------------------
 ## How to Contribute
 
