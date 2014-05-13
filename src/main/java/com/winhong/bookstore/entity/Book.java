@@ -2,6 +2,7 @@ package com.winhong.bookstore.entity;
 
 import com.winhong.bookstore.entity.base.BaseDomain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -15,23 +16,23 @@ public class Book extends BaseDomain {
     /**
      * 书籍主键ID
      */
-    private int id;
+    private long id;
     /**
      * 书名
      */
     private String name;
     /**
-     * 定价
+     * 原价
      */
-    private float originalPrice;
+    private BigDecimal originalPrice;
     /**
-     * 折扣
+     * 折后价
      */
-    private float discount;
+    private BigDecimal discountPrice;
     /**
      * VIP价
      */
-    private float vipPrice;
+    private BigDecimal vipPrice;
     /**
      * 作者
      */
@@ -43,7 +44,7 @@ public class Book extends BaseDomain {
     /**
      * 页码
      */
-    private int pageCount;
+    private int pages;
     /**
      * ISBN
      */
@@ -67,257 +68,165 @@ public class Book extends BaseDomain {
     /**
      * 所属分类
      */
-    private int category;
-
+    private Category category;
     /**
-     * 获取 折扣.
-     *
-     * @return 折扣.
+     * 库存量
      */
-    public float getDiscount() {
-        return discount;
+    private int available;
+    /**
+     * 缩略图片
+     */
+    private String picSmall;
+    /**
+     * 普通图片
+     */
+    private String picNormal;
+    /**
+     * 大图片
+     */
+    private String picBig;
+
+    public long getId() {
+        return id;
     }
 
-    /**
-     * 获取 定价.
-     *
-     * @return 定价.
-     */
-    public float getOriginalPrice() {
-        return originalPrice;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    /**
-     * 设置 定价.
-     *
-     * @param originalPrice 定价.
-     */
-    public void setOriginalPrice(float originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
-    /**
-     * 获取 译者.
-     *
-     * @return 译者.
-     */
-    public String getTranslator() {
-        return translator;
-    }
-
-    /**
-     * 设置 页码.
-     *
-     * @param pageCount 页码.
-     */
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
-    }
-
-    /**
-     * 获取 ISBN.
-     *
-     * @return ISBN.
-     */
-    public String getIsbn() {
-        return isbn;
-    }
-
-    /**
-     * 设置 出版日期.
-     *
-     * @param publishTime 出版日期.
-     */
-    public void setPublishTime(Date publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    /**
-     * 设置 作者.
-     *
-     * @param author 作者.
-     */
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    /**
-     * 获取 书名.
-     *
-     * @return 书名.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * 设置 译者.
-     *
-     * @param translator 译者.
-     */
-    public void setTranslator(String translator) {
-        this.translator = translator;
-    }
-
-    /**
-     * 获取 出版社.
-     *
-     * @return 出版社.
-     */
-    public String getPublisher() {
-        return publisher;
-    }
-
-    /**
-     * 获取 版本号.
-     *
-     * @return 版本号.
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * 设置 所属分类.
-     *
-     * @param category 所属分类.
-     */
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
-    /**
-     * 获取 VIP价.
-     *
-     * @return VIP价.
-     */
-    public float getVipPrice() {
-        return vipPrice;
-    }
-
-    /**
-     * 获取 书籍主键ID.
-     *
-     * @return 书籍主键ID.
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * 设置 ISBN.
-     *
-     * @param isbn ISBN.
-     */
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    /**
-     * 获取 作者.
-     *
-     * @return 作者.
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /**
-     * 设置 书籍主键ID.
-     *
-     * @param id 书籍主键ID.
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * 设置 VIP价.
-     *
-     * @param vipPrice VIP价.
-     */
-    public void setVipPrice(float vipPrice) {
-        this.vipPrice = vipPrice;
-    }
-
-    /**
-     * 设置 版本号.
-     *
-     * @param version 版本号.
-     */
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    /**
-     * 设置 出版社.
-     *
-     * @param publisher 出版社.
-     */
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    /**
-     * 获取 上架时间.
-     *
-     * @return 上架时间.
-     */
-    public Date getAddedTime() {
-        return addedTime;
-    }
-
-    /**
-     * 设置 书名.
-     *
-     * @param name 书名.
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * 设置 上架时间.
-     *
-     * @param addedTime 上架时间.
-     */
-    public void setAddedTime(Date addedTime) {
-        this.addedTime = addedTime;
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
     }
 
-    /**
-     * 获取 所属分类.
-     *
-     * @return 所属分类.
-     */
-    public int getCategory() {
-        return category;
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
-    /**
-     * 获取 出版日期.
-     *
-     * @return 出版日期.
-     */
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public BigDecimal getVipPrice() {
+        return vipPrice;
+    }
+
+    public void setVipPrice(BigDecimal vipPrice) {
+        this.vipPrice = vipPrice;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getTranslator() {
+        return translator;
+    }
+
+    public void setTranslator(String translator) {
+        this.translator = translator;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
     public Date getPublishTime() {
         return publishTime;
     }
 
-    /**
-     * 设置 折扣.
-     *
-     * @param discount 折扣.
-     */
-    public void setDiscount(float discount) {
-        this.discount = discount;
+    public void setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
     }
 
-    /**
-     * 获取 页码.
-     *
-     * @return 页码.
-     */
-    public int getPageCount() {
-        return pageCount;
+    public Date getAddedTime() {
+        return addedTime;
+    }
+
+    public void setAddedTime(Date addedTime) {
+        this.addedTime = addedTime;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public int getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(int available) {
+        this.available = available;
+    }
+
+    public String getPicSmall() {
+        return picSmall;
+    }
+
+    public void setPicSmall(String picSmall) {
+        this.picSmall = picSmall;
+    }
+
+    public String getPicNormal() {
+        return picNormal;
+    }
+
+    public void setPicNormal(String picNormal) {
+        this.picNormal = picNormal;
+    }
+
+    public String getPicBig() {
+        return picBig;
+    }
+
+    public void setPicBig(String picBig) {
+        this.picBig = picBig;
     }
 }

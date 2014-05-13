@@ -1,8 +1,19 @@
-insert into ss_task (id, title, description, user_id) values(1, 'Study PlayFramework 2.0','http://www.playframework.org/', 2);
-insert into ss_task (id, title, description, user_id) values(2, 'Study Grails 2.0','http://www.grails.org/', 2);
-insert into ss_task (id, title, description, user_id) values(3, 'Try SpringFuse','http://www.springfuse.com/', 2);
-insert into ss_task (id, title, description, user_id) values(4, 'Try Spring Roo','http://www.springsource.org/spring-roo', 2);
-insert into ss_task (id, title, description, user_id) values(5, 'Release SpringSide 4.0','As soon as posibble.', 2);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (1, -1, '全部图书', 1);
 
-insert into ss_user (id, login_name, name, password, salt, roles, register_date) values(1,'admin','Admin','691b14d79bf0fa2215f155235df5e670b64394cc','7efbd59d9741d34f','admin','2012-06-04 01:00:00');
-insert into ss_user (id, login_name, name, password, salt, roles, register_date) values(2,'user','Calvin','2488aa0c31c624687bd9928e0a5d29e7d1ed520b','6d65d24122c30500','user','2012-06-04 02:00:00');
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (2, 1, '经济', 2);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (3, 1, '人文', 2);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (4, 1, '历史', 2);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (5, 1, '数理化', 2);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (6, 1, '哲学', 2);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (7, 1, '军事', 2);
+
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (8, 2, '中国经济', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (9, 2, '企业管理', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (10, 3, '外语', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (11, 3, '文学', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (12, 4, '中国历史', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (13, 4, '近代史', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (14, 5, '数学', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (15, 5, '物理', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (16, 6, '古代哲学', 3);
+INSERT INTO "category"("id", "parent_id", "name", "level") VALUES (17, 7, '现代战争', 3);

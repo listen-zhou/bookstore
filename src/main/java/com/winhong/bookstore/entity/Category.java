@@ -11,67 +11,52 @@ public class Category {
     /**
      * 主键ID
      */
-    private int id;
+    private long id;
+
     /**
      * 父类别ID
      */
     private int parentId;
+
     /**
      * 类别名
      */
     private String name;
 
     /**
-     * 设置 父类别ID.
-     *
-     * @param parentId 父类别ID.
+     * 分类层级
      */
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
+    private int level;
+
+    public long getId() {
+        return id;
     }
 
-    /**
-     * 获取 父类别ID.
-     *
-     * @return 父类别ID.
-     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getParentId() {
         return parentId;
     }
 
-    /**
-     * 设置 类别名.
-     *
-     * @param name 类别名.
-     */
-    public void setName(String name) {
-        this.name = name;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
-    /**
-     * 获取 主键ID.
-     *
-     * @return 主键ID.
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * 获取 类别名.
-     *
-     * @return 类别名.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * 设置 主键ID.
-     *
-     * @param id 主键ID.
-     */
-    public void setId(int id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }
