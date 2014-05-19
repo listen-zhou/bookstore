@@ -1,4 +1,4 @@
-package com.winhong.bookstore;
+package com.winhong.bookstore.web;
 
 import com.winhong.bookstore.entity.Book;
 import com.winhong.bookstore.service.BookService;
@@ -17,10 +17,16 @@ public class IndexController {
     BookService bookService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "index")
-	public String welcome(ModelMap model) {
-        List<Book> popularBooks = bookService.listPopularBooks(3);
-		model.addAttribute("pupolarBooks", popularBooks);
+	public String index(ModelMap model) {
+//        List<Book> popularBooks = bookService.listPopularBooks(3);
+//		model.addAttribute("pupolarBooks", popularBooks);
 		return "homepage";
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "register")
+	public String register(ModelMap model) {
+        List<Book> popularBooks = bookService.listPopularBooks(3);
+		model.addAttribute("pupolarBooks", popularBooks);
+		return "register";
+	}
 }

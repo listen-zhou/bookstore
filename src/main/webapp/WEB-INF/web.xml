@@ -21,6 +21,19 @@
     </listener>
 
     <filter>
+        <filter-name>bsFilter</filter-name>
+        <filter-class>com.winhong.bookstore.web.BookstoreFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>bsFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>bsFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
@@ -94,6 +107,6 @@
         <servlet-name>bookstore</servlet-name>
     </filter-mapping>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
