@@ -7,7 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>用户注册</title>
-    <script>
+    <script type="text/javascript">
         function mycheck() {
             if (document.all("password").value != document.all("again").value) {
                 alert("两次输入的密码不正确，请更正。");

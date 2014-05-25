@@ -10,73 +10,140 @@
     <!-- 定义公共的SQL语句-->
     <sql id="selectSql">
         SELECT
-          id as id
-          ,name as name
-          ,original_price as originalPrice
-          ,discount_price as discountPrice
-          ,vip_price as vipPrice
-          ,author as author
-          ,translator as translator
-          ,pages as pageCount
-          ,isbn as isbn
-          ,publisher as publisher
-          ,publish_time as publishTime
-          ,added_time as addedTime
-          ,version as version
-          ,category_id as category
-          ,available as available
-          ,picSmall as picSmall
-          ,pic_normal as picNormal
-          ,pic_big as picBig
-        FROM bs_book A
+          A.id as id
+          ,A.name as name
+          ,A.original_price as originalPrice
+          ,A.discount_price as discountPrice
+          ,A.vip_price as vipPrice
+          ,A.author as author
+          ,A.translator as translator
+          ,A.pages as pages
+          ,A.isbn as isbn
+          ,A.publisher as publisher
+          ,A.publish_time as publishTime
+          ,A.added_time as addedTime
+          ,A.version as version
+          ,B.id as ca_id
+          ,B.parent_id as ca_parentId
+          ,B.name as ca_name
+          ,B.level as ca_level
+          ,A.available as available
+          ,A.pic_small as picSmall
+          ,A.pic_normal as picNormal
+          ,A.pic_big as picBig
+        FROM book A LEFT OUTER JOIN category B ON A.category_id = B.id
     </sql>
+    <resultMap id="bookMap" type="book">
+        <id property="id" column="id"/>
+        <result property="name" column="name" />
+        <result property="originalPrice" column="originalPrice" />
+        <result property="discountPrice" column="discountPrice" />
+        <result property="vipPrice" column="vipPrice" />
+        <result property="author" column="author" />
+        <result property="translator" column="translator" />
+        <result property="pages" column="pages" />
+        <result property="isbn" column="isbn" />
+        <result property="publisher" column="publisher" />
+        <result property="publishTime" column="publishTime" />
+        <result property="addedTime" column="addedTime" />
+        <result property="version" column="version" />
+        <result property="available" column="available" />
+        <result property="picSmall" column="picSmall" />
+        <result property="picNormal" column="picNormal" />
+        <result property="picBig" column="picBig" />
+        <association property="category" javaType="category" columnPrefix="ca_">
+            <id property="id" column="id" />
+            <result property="parentId" column="parentId" />
+            <result property="name" column="name" />
+            <result property="level" column="level" />
+        </association>
+    </resultMap>
     <!-- 根据id获取单个实体-->
-    <select id="searchById" resultType="book" parameterType="int">
+    <select id="searchById" resultMap="bookMap" parameterType="int">
         <include refid="selectSql"/>
         WHERE b_id = #{id}
     </select>
     <!-- 获取所有的列表-->
-    <select id="searchAll" resultType="book">
+    <select id="searchAll" resultMap="bookMap">
         <include refid="selectSql"/>
     </select>
     <!-- 根据条件检索-->
-    <select id="search" resultType="book" parameterType="book">
+    <select id="search" resultMap="bookMap" parameterType="book">
         <include refid="selectSql"/>
         WHERE b_name LIKE #{name}
     </select>
     <!-- 新增-->
     <insert id="insert" parameterType="book" useGeneratedKeys="true" keyProperty="keyId">
-
+      INSERT INTO book(id,name,original_price,discount_price,vip_price,author,translator,pages,isbn,publisher,publish_time,
+                        added_time,version,category_id,available,pic_small,pic_normal,pic_big)
+      VALUES (#{id},#{name},#{originalPrice},#{discountPrice},#{vipPrice},#{author},#{translator},#{pages},#{isbn},#{publisher},
+              #{publishTime},#{addedTime},#{version},#{category.id},#{available},#{picSmall},#{picNormal},#{picBig})
     </insert>
     <!-- 更新-->
     <update id="update" parameterType="book">
-
+      UPDATE book
+      SET id=#{id},name=#{name},original_price=#{originalPrice},discount_price=#{discountPrice},vip_price=#{vipPrice},
+          author=#{author},translator=#{translator},pages=#{pages},isbn=#{isbn},publisher=#{publisher},publish_time=#{publishTime},
+          added_time=#{addedTime},version=#{version},category_id=#{category.id},available=#{available},pic_small=#{picSmall},
+          pic_normal=#{picNormal},pic_big=#{picBig}
+      WHERE id=#{id}
     </update>
     <!-- 保存(新增或者更新)-->
-    <insert id="save" parameterType="book" useGeneratedKeys="true" keyProperty="keyId">
+    <insert id="save" parameterType="book" useGeneratedKeys="true" keyProperty="id">
         <choose>
-            <when test="keyId != null">
-
+            <when test="id != null">
+                INSERT INTO book(id,name,original_price,discount_price,vip_price,author,translator,pages,isbn,publisher,publish_time,
+                                  added_time,version,category_id,available,pic_small,pic_normal,pic_big)
+                VALUES (#{id},#{name},#{originalPrice},#{discountPrice},#{vipPrice},#{author},#{translator},#{pages},#{isbn},#{publisher},
+                        #{publishTime},#{addedTime},#{version},#{category.id},#{available},#{picSmall},#{picNormal},#{picBig})
+                ON DUPLICATE KEY
+                UPDATE book
+                SET id=#{id},name=#{name},original_price=#{originalPrice},discount_price=#{discountPrice},vip_price=#{vipPrice},
+                    author=#{author},translator=#{translator},pages=#{pages},isbn=#{isbn},publisher=#{publisher},publish_time=#{publishTime},
+                    added_time=#{addedTime},version=#{version},category_id=#{category.id},available=#{available},pic_small=#{picSmall},
+                    pic_normal=#{picNormal},pic_big=#{picBig}
+                WHERE id=#{id}
             </when>
             <otherwise>
+                INSERT INTO book(id,name,original_price,discount_price,vip_price,author,translator,pages,isbn,publisher,publish_time,
+                                  added_time,version,category_id,available,pic_small,pic_normal,pic_big)
+                VALUES (#{id},#{name},#{originalPrice},#{discountPrice},#{vipPrice},#{author},#{translator},#{pages},#{isbn},#{publisher},
+                        #{publishTime},#{addedTime},#{version},#{category.id},#{available},#{picSmall},#{picNormal},#{picBig})
             </otherwise>
         </choose>
     </insert>
     <!-- 删除-->
     <delete id="delete" parameterType="book">
-        DELETE FROM bs_book
-        WHERE b_id = #{id}
+        DELETE FROM book WHERE id = #{id}
     </delete>
 
     <!--++++++++++++++++++自定义方法++++++++++++++++-->
-    <select id="getBookByName" resultType="book" parameterType="string">
+    <select id="getBooksByName" resultMap="bookMap" parameterType="string">
         <include refid="selectSql"/>
-        WHERE b_name=#{name}
+        WHERE name LIKE '%'||#{name}||'%'
     </select>
-    <!-- 列出排名前几位的畅销书-->
-    <select id="listMostBuyBook" resultType="book" parameterType="int">
+    <!-- 排行榜-->
+    <select id="rankBooks" resultMap="bookMap">
         <include refid="selectSql"/>
-        left join bs_book_statistics B on A.b_id = B.statics_book_id
-        order by B.statics_buy desc limit #{count}
+        LEFT OUTER join statistics C on A.id = C.book_id
+        ORDER BY
+        <choose>
+          <when test="type == BUY">
+              C.buy
+          </when>
+          <when test="type == NEW">
+              A.added_time
+          </when>
+          <when test="type == CLICK">
+              C.click
+          </when>
+          <when test="type == COMMENT">
+              C.comment
+          </when>
+          <when test="type == FAVORITE">
+              C.favorite
+          </when>
+        </choose>
+         DESC limit #{count}
     </select>
 </mapper>

@@ -80,6 +80,10 @@ public class User extends BaseDomain {
      * 个人简介
      */
     private String introduction;
+    /**
+     * 用户角色列表
+     */
+    private Set<Role> roles;
 
     public long getId() {
         return id;
@@ -223,5 +227,23 @@ public class User extends BaseDomain {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    /**
+     * 设置 roles.
+     *
+     * @param roles roles.
+     */
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    /**
+     * 获取 roles.
+     *
+     * @return roles.
+     */
+    public Set<Role> getRoles() {
+        return roles;
     }
 }

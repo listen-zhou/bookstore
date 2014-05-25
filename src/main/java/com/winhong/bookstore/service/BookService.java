@@ -1,7 +1,9 @@
 package com.winhong.bookstore.service;
 
+import com.winhong.bookstore.common.RankType;
 import com.winhong.bookstore.dao.BookDao;
 import com.winhong.bookstore.entity.Book;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,13 @@ public class BookService {
     @Autowired
     private BookDao bookDao;
 
-    public List<Book> listPopularBooks(int count) {
-        return bookDao.listMostBuyBook(count);
+    /**
+     * 排行榜
+     * @param count
+     * @return
+     */
+    public List<Book> rankBooks(int count, RankType rankType) {
+        return bookDao.rankBooks(count, rankType);
     }
 
 }
